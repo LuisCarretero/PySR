@@ -1942,6 +1942,8 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
                 sampling_eps=self.neural_options["sampling_eps"],
                 subtree_min_nodes=self.neural_options["subtree_min_nodes"],
                 subtree_max_nodes=self.neural_options["subtree_max_nodes"],
+                device=self.neural_options["device"],
+                verbose=self.neural_options["verbose"],
             )
         else:
             neural_options = SymbolicRegression.NeuralOptions(
