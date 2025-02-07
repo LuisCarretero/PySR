@@ -1951,6 +1951,9 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
                 require_expr_similarity=self.neural_options["require_expr_similarity"],
                 similarity_threshold=self.neural_options["similarity_threshold"],
                 sample_batchsize=self.neural_options["sample_batchsize"],
+                sample_logits=self.neural_options["sample_logits"],
+                log_subtree_strings=self.neural_options["log_subtree_strings"],
+                subtree_max_features=self.neural_options["subtree_max_features"],
             )
         else:
             neural_options = SymbolicRegression.NeuralOptions(
