@@ -3,6 +3,7 @@ import sys
 import warnings
 from types import ModuleType
 from typing import cast
+import json
 
 from .julia_registry_helpers import try_with_registry_fallback
 
@@ -43,6 +44,24 @@ autoload_extensions = os.environ.get("PYSR_AUTOLOAD_EXTENSIONS")
 if autoload_extensions is not None:
     # Deprecated; so just pass to juliacall
     os.environ["PYTHON_JULIACALL_AUTOLOAD_IPYTHON_EXTENSION"] = autoload_extensions
+
+
+# TODO: Remove if I find way to directly specify this via juliapkg
+
+# Read juliapkg.json file to get project path
+juliapkg_path = os.path.join(os.path.dirname(__file__), "juliapkg.json")
+try:
+    with open(juliapkg_path, "r") as f:
+        juliapkg_config = json.load(f)
+    
+    # Set environment variable if "project" key exists
+    if "project" in juliapkg_config:
+        print(f"Setting PYTHON_JULIAPKG_PROJECT to {juliapkg_config['project']}")
+        os.environ["PYTHON_JULIAPKG_PROJECT"] = juliapkg_config["project"]
+except (FileNotFoundError, json.JSONDecodeError, KeyError):
+    # If file doesn't exist, can't be parsed, or doesn't have project key,
+    # don't set the environment variable
+    pass
 
 
 def _import_juliacall():
