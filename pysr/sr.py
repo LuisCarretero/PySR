@@ -1935,7 +1935,7 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
             neural_mutate_tree=self.weight_neural_mutate_tree,
         )
 
-        if self.neural_options["active"]:
+        if self.neural_options is not None and self.neural_options["active"]:
             neural_options = SymbolicRegression.NeuralOptions(
                 active=self.neural_options["active"],
                 model_path=self.neural_options["model_path"],
@@ -1956,9 +1956,7 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
                 subtree_max_features=self.neural_options["subtree_max_features"],
             )
         else:
-            neural_options = SymbolicRegression.NeuralOptions(
-                active=self.neural_options["active"],
-            )
+            neural_options = SymbolicRegression.NeuralOptions(active=False)
 
         jl_binary_operators: list[Any] = []
         jl_unary_operators: list[Any] = []

@@ -42,20 +42,30 @@ class TensorBoardLoggerSpec(AbstractLoggerSpec):
 
     log_dir: str = "logs/run"
     log_interval: int = 1
-    overwrite: bool = False
+    overwrite: str = "increment"  # Options: ['increment', 'overwrite', 'append']
 
     def create_logger(self) -> AnyValue:
         # We assume that TensorBoardLogger is already imported via `julia_extensions.py`
         make_logger = jl.seval(
             """
-            function make_logger(log_dir::AbstractString, overwrite::Bool, log_interval::Int)
+            function make_logger(log_dir::AbstractString, overwrite_mode::AbstractString, log_interval::Int)
+                overwrite_options = Dict(
+                    "increment" => TensorBoardLogger.tb_increment,
+                    "overwrite" => TensorBoardLogger.tb_overwrite,
+                    "append" => TensorBoardLogger.tb_append
+                )
+                
+                if !haskey(overwrite_options, overwrite_mode)
+                    error("Invalid overwrite mode: ", overwrite_mode, ". Must be one of: increment, overwrite, append")
+                end
+                
                 base_logger = TensorBoardLogger.TBLogger(
                     log_dir,
-                    (overwrite ? (TensorBoardLogger.tb_overwrite,) : ())...
+                    (overwrite_options[overwrite_mode],)
                 )
                 return SRLogger(; logger=base_logger, log_interval)
             end
-        """
+            """
         )
         log_dir = str(self.log_dir)
         return make_logger(log_dir, self.overwrite, self.log_interval)
