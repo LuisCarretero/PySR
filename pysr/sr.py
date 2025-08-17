@@ -913,6 +913,8 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
         extra_jax_mappings: dict[Callable, str] | None = None,
         denoise: bool = False,
         select_k_features: int | None = None,
+        neural_options: dict | None = None,
+        weight_neural_mutate_tree: float = 1.0,
         **kwargs,
     ):
         # Hyperparameters
@@ -1024,6 +1026,8 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
         # Pre-modelling transformation
         self.denoise = denoise
         self.select_k_features = select_k_features
+        self.neural_options = neural_options
+        self.weight_neural_mutate_tree = weight_neural_mutate_tree
 
         # Once all valid parameters have been assigned handle the
         # deprecated kwargs
@@ -1971,7 +1975,31 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
             randomize=self.weight_randomize,
             do_nothing=self.weight_do_nothing,
             optimize=self.weight_optimize,
+            neural_mutate_tree=self.weight_neural_mutate_tree,
         )
+
+        if self.neural_options is not None and self.neural_options["active"]:
+            neural_options = SymbolicRegression.NeuralOptions(
+                active=self.neural_options["active"],
+                model_path=self.neural_options["model_path"],
+                sampling_eps=self.neural_options["sampling_eps"],
+                subtree_min_nodes=self.neural_options["subtree_min_nodes"],
+                subtree_max_nodes=self.neural_options["subtree_max_nodes"],
+                device=self.neural_options["device"],
+                verbose=self.neural_options["verbose"],
+                max_resamples=self.neural_options["max_resamples"],
+                max_tree_size_diff=self.neural_options["max_tree_size_diff"],
+                require_tree_size_similarity=self.neural_options["require_tree_size_similarity"],
+                require_novel_skeleton=self.neural_options["require_novel_skeleton"],
+                require_expr_similarity=self.neural_options["require_expr_similarity"],
+                similarity_threshold=self.neural_options["similarity_threshold"],
+                sample_batchsize=self.neural_options["sample_batchsize"],
+                sample_logits=self.neural_options["sample_logits"],
+                log_subtree_strings=self.neural_options["log_subtree_strings"],
+                subtree_max_features=self.neural_options["subtree_max_features"],
+            )
+        else:
+            neural_options = SymbolicRegression.NeuralOptions(active=False)
 
         jl_binary_operators: list[Any] = []
         jl_unary_operators: list[Any] = []
@@ -2066,6 +2094,7 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
             seed=seed,
             deterministic=self.deterministic,
             define_helper_functions=False,
+            neural_options=neural_options,
         )
 
         self.julia_options_stream_ = jl_serialize(options)

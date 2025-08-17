@@ -1,13 +1,15 @@
 {
-    "julia": "=1.10.0, 1.10.3",
+    "julia": "=1.11.6",
     "packages": {
         "SymbolicRegression": {
             "uuid": "8254be44-1295-4e6a-a16d-46603ac705cb",
-            "version": "~1.11.0"
+            "dev": true,
+            "path": "/cephfs/home/lc865/workspace/similar-expressions/SymbolicRegression"
         },
         "Serialization": {
             "uuid": "9e88b42a-f829-5b0c-bbe9-9e923198166b",
             "version": "1"
         }
-    }
+    },
+    "project": "/cephfs/home/lc865/workspace/similar-expressions"
 }
