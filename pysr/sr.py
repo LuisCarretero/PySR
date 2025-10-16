@@ -1997,6 +1997,10 @@ class PySRRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
                 sample_logits=self.neural_options["sample_logits"],
                 log_subtree_strings=self.neural_options["log_subtree_strings"],
                 subtree_max_features=self.neural_options["subtree_max_features"],
+                eval_min=self.neural_options["eval_min"],
+                eval_max=self.neural_options["eval_max"],
+                eval_npoints=self.neural_options["eval_npoints"],
+                eval_transform=self.neural_options["eval_transform"],
             )
         else:
             neural_options = SymbolicRegression.NeuralOptions(active=False)
