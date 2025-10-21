@@ -15,6 +15,15 @@
         },
         "DynamicExpressions": {
             "uuid": "a40a106e-89c9-4ca8-8020-a735e8728b6b"
+        },
+        "StatsBase": {
+            "uuid": "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+        },
+        "HDF5": {
+            "uuid": "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
+        },
+        "Distributions": {
+            "uuid": "31c24e10-a181-5473-b8eb-7969acd0382f"
         }
     },
     "project": "/cephfs/home/lc865/workspace/similar-expressions"
