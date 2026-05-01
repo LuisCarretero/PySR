@@ -4,7 +4,7 @@
         "SymbolicRegression": {
             "uuid": "8254be44-1295-4e6a-a16d-46603ac705cb",
             "dev": true,
-            "path": "/cephfs/home/lc865/workspace/similar-expressions/SymbolicRegression"
+            "path": "/global/u1/l/luisc440/workspace/similar-expressions/SymbolicRegression"
         },
         "Serialization": {
             "uuid": "9e88b42a-f829-5b0c-bbe9-9e923198166b",
@@ -25,6 +25,5 @@
         "Distributions": {
             "uuid": "31c24e10-a181-5473-b8eb-7969acd0382f"
         }
-    },
-    "project": "/cephfs/home/lc865/workspace/similar-expressions"
+    }
 }
